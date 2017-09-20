@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>编辑table里的td</title>
+        <script src="js/jedate/jquery-1.7.2.js"></script>
+        <style>
+            table {
+                border: 1px solid #EEEEEE;
+                width: 100%;
+            }
+            
+            table tr td {
+                border-top: 1px solid #EEEEEE;
+                border-right: 1px solid #EEEEEE;
+                padding: 0px 5px;
+                height: 30px;
+                line-height: 29px;
+            }
+            
+            table tr td input {
+                width: 80%;
+            }
+            
+            table tr td:last-child,
+            table tr th:last-child {
+                border-right: 0px;
+            }
+            
+            table tr th {
+                border-right: 1px solid #EEEEEE;
+            }
+            
+            table tr td:nth-child(3),
+            table tr td:last-child {
+                cursor: pointer;
+            }
+            
+            .finish {}
+            
+            .tagsDiv {
+                width: 80%;
+                line-height: 23px;
+                border: 1px solid #777777;
+                border-radius: 5px;
+            }
+            
+            input {
+                height: 21px;
+                line-height: 21px;
+                border: 0px;
+                text-indent: 10px;
+                outline: none;
+            }
+            
+            input.textInput {
+                height: 25px;
+                border: 1px solid #777777;
+                line-height: 23px;
+                text-align: left;
+                text-indent: 10px;
+            }
+            
+            .tag {
+                display: inline-block;
+                color: #FFFFFF;
+                background-color: #5fa2dd;
+                border-radius: 8px;
+                font-size: 12px;
+                text-align: center;
+                white-space: nowrap;
+                vertical-align: baseline;
+                padding-left: 3px;
+                padding-right: 3px;
+                margin: 0px 5px;
+            }
+        </style>
+        <script>
+            $(function() {
+                console.log($("table tr td:first").index() + "///" + $("table tr td:nth-child(1)").index());
+                $(document).on("click", ".edit", function() {
+                    alert("96969");
+                });
+                //tds.click(tdClick);
+                //				$(document).on("click", "table tr td:nth-child(3).finish", function(e) {
+                //					e.stopPropagation();
+                //					alert($(this).parent("tr").index());
+                //					var firstTd = $(this).parent("tr").find("td:nth-child(1)").text();
+                //					var twoTd = $(this).parent("tr").find("td:nth-child(2)").text();
+                //					$(this).parent("tr").find("td:nth-child(1)").html("<input type='text' value=" + firstTd + ">");
+                //					$(this).parent("tr").find("td:nth-child(2)").html("<input type='text' value=" + twoTd + ">");
+                //					$(this).text("保存").addClass("edit").removeClass("finish");
+                //				});
+                //遍历一行里的td
+                $(document).on("click", "table tr td span.finish", function() {
+                    var $val;
+                    var $index = $(this).parents("tr").find("td").length;
+                    console.log($index);
+                    for(var i = 1; i <= $index; i++) {
+                        var $cl = $(this).parents("tr").find("td:nth-child(" + i + ")").attr("class");
+                        if($cl == "writtenMessage") {
+                            $val = $(this).parents("tr").find("td:nth-child(" + i + ")").text();
+                            $(this).parents("tr").find("td:nth-child(" + i + ")").html("<input type='text' class='textInput' value=" + $val + ">");
+                        } else if($cl == "unitMessage") {
+                            $val = $(this).parents("tr").find("td:nth-child(" + i + ")").text();
+                            var zz = "[%\u4e00-\u9fa5]";
+                            var $RE = $val.search(zz);
+                            var $con = "";
+                            var $unit = "";
+                            for(var t = 0; t < $RE; t++) {
+                                $con += $val[t];
+                            }
+                            for(var u = $RE; u < $val.length; u++) {
+                                $unit += $val[u];
+                            }
+                            $(this).parents("tr").find("td:nth-child(" + i + ")").html("<input type='text' class='textInput' value=" + $con + ">" + $unit);
+                        } else if($cl == "tagMessage") {
+                            var $html;
+                            $html = "<div class='tagsDiv'>";
+                            $val = $(this).parents("tr").find("td:nth-child(" + i + ")").find("span").length;
+                            for(var s = 1; s <= $val; s++) {
+                                $html += "<span class='tag'>" + $(this).parents("tr").find("td:nth-child(" + i + ")").find("span:nth-child(" + s + ")").text() + "</span>";
+                            }
+                            $html += "<input type='text' id='companyName' onkeydown='keyDown(event)' placeholder='请输入标签'/>";
+                            $html += "</div>";
+                            $(this).parents("tr").find("td:nth-child(" + i + ")").html($html);
+                        } else if($cl == 'editMessage') {
+                            console.log("编辑");
+                            //$(this).parents("tr").find("td:nth-child("+i+")").html();
+                        }
+                    }
+                });
+            });
+
+            function keyDown(e) {
+                var ev = window.event || e;
+                if(ev.keyCode == 13) {
+                    searchNode();
+                }
+            };
+
+            function searchNode() {
+                var $val = $("#companyName").val();
+                console.log($val);
+                var $span = "<span class='tag'>" + $val + "</span>";
+                $("#companyName").before($span);
+                $("#companyName").val("");
+            }
+        </script>
+    </head>
+
+    <body>
+        <table cellspacing="0">
+            <tr>
+                <th>名称</th>
+                <th>描述</th>
+                <th>退款比例</th>
+                <th>扣费金额</th>
+                <th>标签</th>
+                <th>操作</th>
+            </tr>
+            <tr>
+                <td><input type="text" placeholder="请输入名称" class="textInput" /></td>
+                <td><input type="text" placeholder="请输入描述信息" class="textInput" /></td>
+                <td><input type="text" class="textInput" />%</td>
+                <td><input type="text" class="textInput" />元</td>
+                <td>
+                    <div class="tagsDiv">
+                        <input type="text" value="" id="companyName" onkeydown="keyDown(event)" placeholder="请输入标签" />
+                    </div>
+                </td>
+                <td>
+                    <span class="finish">编辑</span>
+                    <span>删除</span>
+                </td>
+            </tr>
+            <tr>
+                <td class="writtenMessage">幼儿园大班-幼儿思维游戏</td>
+                <td class="writtenMessage">通过趣味化、情景化和游戏化的情景设计训练，培养孩子的思维能力、团队合作能力</td>
+                <td class="unitMessage">6%</td>
+                <td class="unitMessage">6个月</td>
+                <td class="tagMessage">
+                    <span class="tag">
+						邀约到访
+					</span>
+                    <span class="tag">
+						邀约到访02
+					</span>
+                    <span class="tag">
+						邀约到访03
+					</span>
+                </td>
+                <td class="editMessage">
+                    <span class="finish">编辑</span>
+                    <span>删除</span>
+                </td>
+            </tr>
+        </table>
+
+        <table class="tableLine">
+            <tbody>
+                <tr>
+                    <th></th>
+                    <th>在读</th>
+                    <th>已结</th>
+                    <th>姓名</th>
+                    <th>性别</th>
+                    <th>年龄</th>
+                    <th>联系电话</th>
+                    <th>来源渠道</th>
+                    <th>可用总余额</th>
+                    <th>未交付金额</th>
+                    <th>签约时间</th>
+                    <th>所在校区</th>
+                    <th>负责人</th>
+                </tr>
+
+                <tr>
+                    <td><i class="iconfont icon-jian"></i></td>
+                    <td>30</td>
+                    <td>10</td>
+                    <td>刘丹丹</td>
+                    <td>女</td>
+                    <td>10</td>
+                    <td>15236542125</td>
+                    <td>电话呼入</td>
+                    <td>￥2000.00</td>
+                    <td>￥200.00</td>
+                    <td>2017年7月21</td>
+                    <td>长宁校区</td>
+                    <td>杨某某</td>
+                </tr>
+                <tr>
+                    <td colspan="13">
+                        <div>
+                            vesosdofa册送测试啊
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><i class="iconfont icon-jian"></i></td>
+                    <td>30</td>
+                    <td>10</td>
+                    <td>刘丹丹</td>
+                    <td>女</td>
+                    <td>10</td>
+                    <td>15236542125</td>
+                    <td>电话呼入</td>
+                    <td>￥2000.00</td>
+                    <td>￥200.00</td>
+                    <td>2017年7月21</td>
+                    <td>长宁校区</td>
+                    <td>杨某某</td>
+                </tr>
+                <tr>
+                    <td colspan="13">
+                        <div>
+                            vesosdofa册送测试啊
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><i class="iconfont icon-jian"></i></td>
+                    <td>30</td>
+                    <td>10</td>
+                    <td>刘丹丹</td>
+                    <td>女</td>
+                    <td>10</td>
+                    <td>15236542125</td>
+                    <td>电话呼入</td>
+                    <td>￥2000.00</td>
+                    <td>￥200.00</td>
+                    <td>2017年7月21</td>
+                    <td>长宁校区</td>
+                    <td>杨某某</td>
+                </tr>
+                <tr>
+                    <td colspan="13">
+                        <div>
+                            vesosdofa册送测试啊
+                        </div>
+                    </td>
+                </tr>
+                <tr>
+                    <td><i class="iconfont icon-jian"></i></td>
+                    <td>30</td>
+                    <td>10</td>
+                    <td>刘丹丹</td>
+                    <td>女</td>
+                    <td>10</td>
+                    <td>15236542125</td>
+                    <td>电话呼入</td>
+                    <td>￥2000.00</td>
+                    <td>￥200.00</td>
+                    <td>2017年7月21</td>
+                    <td>长宁校区</td>
+                    <td>杨某某</td>
+                </tr>
+                <tr>
+                    <td colspan="13">
+                        <div>
+                            vesosdofa册送测试啊
+                        </div>
+                    </td>
+                </tr>
+            </tbody>
+        </table>
+        <script>
+            $(function(){
+               $(".tableLine tr:nth-child(2n+2)").click(function(){
+                  alert($(this).index()) ;
+                  $(this).next("tr").hide();
+               })
+            })
+        </script>
+    </body>
+
+</html>

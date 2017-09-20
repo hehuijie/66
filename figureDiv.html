@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>鼠标移入，隐藏的div显示，带有箭头</title>
+		<style type="text/css">
+			span.titleHeader {
+				display: inline-block;
+				width: 200px;
+				height: 30px;
+				line-height: 30px;
+				background-color: rgba(232, 211, 214, 0.55);
+				text-align: center;
+			}
+			
+			div.info {
+				margin-top: 50px;
+				position: relative;
+				width: 200px;
+				height: 50px;
+				line-height: 50px;
+				background: #f6f1b3;
+				box-shadow: 1px 2px 3px #e9d985;
+				border: 1px solid #DACE7C;
+				border-radius: 4px;
+				text-align: center;
+				color: red;
+			}
+			
+			.nav {
+				position: absolute;
+				left: 30px;
+				overflow: hidden;
+				width: 0px;
+				height: 0px;
+				border-width: 10px;
+				border-style: solid dashed dashed dashed;
+			}
+			
+			.nav-border {
+				top: -20px;
+				border-color: transparent transparent #DACE7C transparent;
+			}
+			
+			.nav-background {
+				top: -19px;
+				border-color: transparent transparent #F6F1B3 transparent;
+			}
+			
+			.navTransform {
+				position: absolute;
+				top: -8px;
+				left: 30px;
+				overflow: hidden;
+				width: 13px;
+				height: 13px;
+				background: #F6F1B3;
+				border-left: 1px solid #DACE7C;
+				border-top: 1px solid #DACE7C;
+				-webkit-transform: rotate(45deg);
+				-moz-transform: rotate(45deg);
+				-moz-transform: rotate(45deg);
+				transform: rotate(45deg);
+			}
+			
+			.triangle {
+				width: 0;
+				height: 0;
+			}
+			
+			.con {
+				height: 250px;
+				width: 200px;
+				margin: 0 auto;
+				overflow: hidden;
+				margin-top: 100px;
+				position: relative;
+				background-color: #4cd964;
+			}
+			
+			.subscript {
+				color: #fff;
+				height: 40px;
+				width: 100px;
+				position: absolute;
+				left: -38px;
+				text-align: center;
+				line-height: 55px;
+				font-family: "黑体";
+				background-color: #0c60ee;
+				/*-moz-transform: rotate(-45deg);
+				-webkit-transform: rotate(-45deg);
+				-o-transform: rotate(-45deg);
+				-ms-transform: rotate(-45deg);
+				transform: rotate(-45deg);*/
+			}
+		</style>
+	</head>
+
+	<body>
+		<span class="titleHeader">移入显示</span>
+		<!--第一个 以border属性实现 带箭头的提示框-->
+		<div class="info">
+			<span>信息提示</span>
+			<div class="nav nav-border"></div>
+			<div class="nav nav-background"></div>
+		</div>
+		<!--第二个 以css3 transform实现 带箭头的提示框-->
+		<div class="info">
+			<span>信息提示</span>
+			<div class="navTransform"></div>
+		</div>
+		<!--三角形-->
+		<div class="triangle">sjidj</div>
+
+		<div class="con">
+			<div class="subscript">
+				角标
+			</div>
+		</div>
+	</body>
+
+</html>

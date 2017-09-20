@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>input 弹出层 在onfocus的状态下</title>
+		<script src="js/jedate/jquery-1.7.2.js"></script>
+		<style>
+			.divStyle {
+				background: #666;
+				position: absolute;
+				overflow: auto;
+				display: none;
+				padding: 50px;
+			}
+		</style>
+		<script>
+			//			function $(id) {
+			//				return(document.getElementById(id));
+			//			}
+			function show_div(divId, evt) {
+
+				var od = $("#" + divId);
+				var e = window.event || evt;
+				var o = e.srcElement || e.target;
+				var $top = o.offsetTop + 20;
+				//				console.log(od.CSSStyleDeclaration);
+				//				with(od.CSSStyleDeclaration){
+				//					display = "block";
+				//					left = o.offsetLeft + "px";
+				//					top = o.offsetTop + "px";
+				//				}
+				//display = "block";
+				od.css("display", "block");
+				od.css("left", o.offsetLeft + "px");
+				od.css("top", o.offsetTop + "px");
+				//left = o.offsetLeft + "px";
+				//top = o.offsetTop + "px";
+			}
+
+			function hide_div(evt) {
+				$(".divStyle").css("display", "none");
+			}
+
+			function control_bubble(oEvent) {
+				//console.log("1");
+				oEvent = oEvent || window.event;
+				if(document.all) {
+					//console.log("2");
+					oEvent.cancelBubble = true;
+				} else {
+					//console.log("3");
+					oEvent.stopPropagation();
+				}
+			};
+
+			function fill_input(oEvent) {
+				alert("显示输入框中的内容");
+				control_bubble(oEvent);
+			}
+			var xx,yy;
+			$(function() {
+				$("input[type='text']").mousemove(function(e) {
+					//					var pageX = e.pageX;
+					//					var pageY = e.pageY;
+					//					console.log(pageX + '   ' + pageY);
+					 xx = e.originalEvent.x || e.originalEvent.layerX || 0;
+					 yy = e.originalEvent.y || e.originalEvent.layerY || 0;
+					console.log(xx + '   ' + yy);
+				})
+				$("input[type='text']").focus(function(e) {
+					console.log(e.pageXOffset);
+					//alert($(this).attr("id"));
+					var divId = $(this).attr("id") + "_div";
+					//console.log(divId);
+					show_div(divId);
+				});
+				//				$("input[type='text']").onfocus = function(){
+				//					alert((this).attr("id"));
+				//					var divId = $(this).attr("id")+"_div";
+				//					console.log(divId);
+				//					show_div(divId);
+				//				};
+				document.onclick = function() {
+					hide_div();
+				};
+				$("input[type='text']").onclick = control_bubble;
+				$(".divStyle").onclick = fill_input;
+			});
+			
+			
+			//获取元素的纵坐标 
+function getTop(e) {
+	var offset = e.offsetTop;
+	if(e.offsetParent != null) offset += getTop(e.offsetParent);
+	return offset;
+}
+//获取元素的横坐标 
+function getLeft(e) {
+	var offset = e.offsetLeft;
+	if(e.offsetParent != null) offset += getLeft(e.offsetParent);
+	return offset;
+}
+			
+		</script>
+	</head>
+
+	<body>
+		<div style="width: 200px; height: 200px;"></div>
+		<input type="text" id="input1" />
+		<input type="text" id="input2" />
+
+		<div id="input1_div" class="divStyle">onfocus</div>
+		<div id="input2_div" class="divStyle">测试</div>
+	</body>
+
+</html>

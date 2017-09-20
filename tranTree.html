@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+
+    <head>
+        <meta charset="utf-8">
+        <title>横向树状图</title>
+        <script src="js/jquery-min.js"></script>
+        <style>
+            * {
+                margin: 0;
+                padding: 0;
+            }
+            
+            .category-tree {
+                position: relative;
+                left: 10%;
+                /*float: left;*/ 
+                display: inline-block;
+            }
+            
+            .category-name {
+                display: inline-block;
+                position: relative;
+                right: 60px;
+            }
+            
+            .category-name:after {
+                content: '';
+                display: inline-block;
+                width: 8px;
+                height: 8px;
+                border: 1px solid #489DED;
+                border-radius: 50%;
+                position: relative;
+                left: 70px;
+                background: #fffff;
+            }
+            
+            .category-name-span {
+                display: inline-block;
+                text-align: center;
+                width: 70px;
+                height: 30px;
+                line-height: 30px;
+                background: #489ded;
+                border: 1px solid #489ded;
+                color: #FFFFFF;
+                border-radius: 3px;
+            }
+            
+            span.span-block {
+                display: inline-block;
+                text-align: center;
+                width: 60px;
+                height: 30px;
+                line-height: 30px;
+                background: #f86b4f;
+                border: 1px solid #F86B4F;
+                border-radius: 3px;
+                color: #FFFFFF;
+                font-size: 12px;
+            }
+            
+            .child-menu {
+                position: relative;
+                /*top: 45%;
+                left: 45%;*/
+                display: inline-block;
+            }
+            
+            .child-menu li {
+                margin: 5px 0px;
+                list-style: none;
+            }
+            
+            .child-menu li:before {
+                content: '';
+                display: inline-block;
+                width: 50px;
+                height: 30px;
+                border-top: 1px solid #DDDDDD;
+                border-left: 1px solid #DDDDDD;
+                position: relative;
+                top: 25px;
+            }
+            
+            .child-menu li:after {
+                content: '';
+                display: inline-block;
+                width: 50px;
+                height: 30px;
+                border-left: 1px solid #DDDDDD;
+                position: relative;
+                right: 113px;
+                top: 5px;
+            }
+            
+            .child-menu li:last-child:after {
+                right: 112px;
+                top: 0px;
+                border-bottom: 1px solid #DDDDDD;
+                border-bottom-left-radius: 5px;
+            }
+            
+            .child-menu li:last-child:before {
+                border: 0px;
+            }
+            
+            .child-menu li:first-child:after {
+                border: 0px;
+            }
+            
+            .child-menu li:first-child:before {
+                border-top-left-radius: 5px;
+            }
+            .spanBorder{
+                display: inline-block;
+                width: 60px;
+                height: 22px;
+                background: #489DED;
+                line-height: 22px;
+                color: #FFFFFF;
+                font-size: 12px;
+                position: relative;
+                top: 10px;
+                left: 22px;
+                text-align: center;
+            }
+            .border01:before{
+                content: '';
+                display: inline-block;
+                width: 25px;
+                border-top: 1px solid #D91600;
+                position: relative;
+                /*right: 25px;*/
+            }
+        </style>
+    </head>
+
+    <body>
+        <div class="category-tree">
+            <p class="category-name" id="category1">
+                <span class="category-name-span">教务部</span>
+            </p>
+            <ul class="child-menu" data-id="category1">
+                <li><span class="span-block">经理组</span></li>
+                <li><span class="span-block">经理组</span></li>
+                <li><span class="span-block">经理组</span></li>
+                <li><span class="span-block">经理组</span></li>
+            </ul>
+        </div>
+        <div class="category-tree">
+            <p class="category-name" id="category2">
+                <span class="category-name-span">教务部</span>
+            </p>
+            <ul class="child-menu" data-id="category2">
+                <li><span class="span-block">经理组</span></li>
+                <li><span class="span-block">经理组</span></li>
+                <li><span class="span-block">经理组</span></li>
+                <!--<li><span class="span-block">经理组</span></li>-->
+            </ul>
+        </div>
+        <div class="category-tree">
+            <p class="category-name" id="category3">
+                <span class="category-name-span">教务部</span>
+            </p>
+            <ul class="child-menu" data-id="category3">
+                <li><span class="span-block">经理组</span></li>
+                <li><span class="span-block">经理组</span></li>
+                <!--<li><span class="span-block">经理组</span></li>
+                <li><span class="span-block">经理组</span></li>-->
+            </ul>
+        </div>
+        <div class="category-tree">
+            <p class="category-name" id="category4">
+                <span class="category-name-span">教务部</span>
+            </p>
+            <ul class="child-menu" data-id="category4">
+                <li><span class="span-block">经理组</span></li>
+                <li><span class="span-block">经理组</span></li>
+                <li><span class="span-block">经理组</span></li>
+                <li><span class="span-block">经理组</span></li>
+                <li><span class="span-block">经理组</span></li>
+            </ul>
+        </div>
+        
+        <div class="border01">
+            <span class="spanBorder">付费类型</span>
+        </div>
+        
+        <script type="text/javascript">
+            $(function() {
+                setTop();
+
+            });
+
+            function setTop() {
+                for(var i = 1; i <= $('.category-tree').length; i++) {
+                    var dataId = $('.category-tree:nth-child(' + i + ') .category-name').attr('id');
+                    var H = $('.child-menu[data-id=' + dataId + ']').height() - 50;
+                    var L = $('.child-menu[data-id=' + dataId + '] li').length;
+//                  console.log(dataId + '////' + H + '****' + L + '#####' + H / L);
+                    $('.category-tree:nth-child(' + i + ') .category-name').css('bottom', H / 2);
+                }
+            }
+        </script>
+    </body>
+
+</html>

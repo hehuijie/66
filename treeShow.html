@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>树状图节点显示</title>
+		<style>
+			* {
+				margin: 0;
+				padding: 0;
+			}
+			
+			.tree ul {
+				padding-top: 20px;
+				position: relative;
+			}
+			
+			.tree li {
+				float: left;
+				list-style: none;
+				text-align: center;
+				position: relative;
+				padding: 20px 5px 0 5px;
+			}
+			
+			.tree a {
+				display: inline-block;
+				border: 1px solid #CCCCCC;
+				padding: 10px;
+				text-decoration: none;
+				color: #666666;
+				border-radius: 5px;
+				/*首字母大写*/
+				text-transform: capitalize;
+			}
+			/*利用before，after作分支线*/
+			
+			.tree li:before,
+			.tree li:after {
+				content: '';
+				position: absolute;
+				top: 0;
+				right: 50%;
+				width: 50%;
+				height: 20px;
+				border-top: 1px solid #CCCCCC;
+			}
+			
+			.tree li:after {
+				right: auto;
+				left: 50%;
+				border-left: 1px solid #CCCCCC;
+			}
+			
+			.tree li:first-child:before,
+			.tree li:last-child:after {
+				border: 0 none;
+			}
+			
+			.tree li:last-child:before {
+				border-right: 1px solid #CCCCCC;
+				border-radius: 0 10px 0 0;
+			}
+			
+			.tree li:first-child:after {
+				border-radius: 10px 0 0 0;
+			}
+			/*删除仅只有一个分支的分支线*/
+			
+			.tree li:only-child:before,
+			.tree li:only-child:after {
+				border: none;
+			}
+			
+			.tree li:only-child {
+				padding-top: 0;
+			}
+			/*添加仅只有一个分支的下分支线*/
+			
+			.tree ul ul:before {
+				content: '';
+				position: absolute;
+				top: 0;
+				left: 50%;
+				border-left: 1px solid #CCCCCC;
+				width: 0px;
+				height: 20px;
+			}
+			/*添加选中的状态*/
+			
+			.tree li a:hover,
+			.tree li a:hover+ul li a {
+				background-color: #c8e4f8;
+				color: #000000;
+				border: 1px solid #94a0b4;
+			}
+			
+			.tree li a:hover+ul li:after,
+			.tree li a:hover+ul li:before,
+			.tree li a:hover+ul::before,
+			.tree li a:hover+ul ul::before {
+				border-color: #94a0b4;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="tree">
+			<ul>
+				<li>
+					<a href="#">parent01</a>
+					<ul>
+						<li>
+							<a href="#">child01</a>
+							<ul>
+								<li>
+									<a href="#">child岁01</a>
+								</li>
+							</ul>
+						</li>
+						<li>
+							<a href="#">child02</a>
+						</li>
+						<li>
+							<a href="#">child03</a>
+						</li>
+					</ul>
+				</li>
+				<li>
+					<a href="#">parent02</a>
+					<ul>
+						<li>
+							<a href="#">child01</a>
+						</li>
+						<li>
+							<a href="#">child02</a>
+						</li>
+						<li>
+							<a href="#">child03</a>
+						</li>
+					</ul>
+				</li>
+			</ul>
+		</div>
+	</body>
+
+</html>

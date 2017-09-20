@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="utf-8">
+		<title>输入框回车添加标签</title>
+		<script src="js/jedate/jquery-1.7.2.js"></script>
+		<style>
+			.tagsDiv{
+				width: 80%;
+				height: 25px;
+				line-height: 23px;
+				border: 1px solid #777777;
+				border-radius: 5px;
+			}
+			input{
+				height: 21px;
+				line-height: 21px;
+				border: 0px;
+				text-indent: 10px;
+				outline: none;
+				/*position: relative;
+				left: 2px;*/
+			}
+			.tag{
+				/*height: 18px;
+				line-height: 18px;*/
+				display: inline-block;
+				/*padding: 3px 9px;*/
+				color: #FFFFFF;
+				background-color: #5fa2dd;
+				border-radius:8px;
+				font-size: 12px;
+				text-align: center;
+				white-space: nowrap;
+				vertical-align: baseline;
+				padding-left: 3px;
+				padding-right: 3px;
+				margin: 0px 5px;
+			}
+			.delTag{
+				display: inline-block;
+				width: 16px;
+				height: 16px;
+				border-radius: 50%;
+				background-color: #FFFFFF;
+			}
+			.delTag:after{
+				content: 'X';
+				/*content: '\f057';*/
+				padding: 0px 2px;
+			}
+		</style>
+		<script>
+			function keyDown(e){
+				var ev = window.event || e;
+				if(ev.keyCode == 13){
+					searchNode();
+				}
+			};
+			function searchNode(){
+				var $val =$("#companyName").val();
+				console.log($val);
+				var $span = "<span class='tag'>"+$val+"</span>";
+				$("#companyName").before($span);
+				$("#companyName").val("");
+			}
+		</script>
+	</head>
+	<body>
+		<div class="tagsDiv">
+			<span class="tag">
+				邀约到访
+				<i class="iconfont icon-closecircled"></i>
+			</span>
+			<input type="text" value="" id="companyName" onkeydown="keyDown(event)" placeholder="请输入标签" />
+			
+		</div>
+	</body>
+</html>

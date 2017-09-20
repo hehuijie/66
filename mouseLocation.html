@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8" />
+		<title>data</title>
+		<script src="js/jquery-min.js"></script>
+		<style>
+			.showImg {
+				border: 1px solid #e9e9e9;
+			}
+			
+			.showImg img {
+				width: 160px;
+				height: 160px;
+				padding: 10px;
+			}
+			
+			ul li {
+				list-style: none;
+				display: inline-block;
+				font-size: 12px;
+				border: 1px solid #E9E9E9;
+				width: 60px;
+				height: 30px;
+				line-height: 28px;
+				text-align: center;
+				position: relative;
+			}
+			
+			.active {
+				border: 2px solid #e66665;
+			}
+			
+			ul li.active i {
+				position: absolute;
+				bottom: -1px;
+				right: -1px;
+				width: 13px;
+				height: 13px;
+				display: block;
+				background-image: url(img/redRight.png);
+				background-repeat: no-repeat;
+			}
+		</style>
+	</head>
+
+	<body>
+		<!--一次上传一张图片-->
+		<input type="file" name="file" id="Jbtn" multiple="multiple" />
+		<img src="" class="showImg" />
+		<div class="showImg">
+
+		</div>
+		<script>
+			function getObjectURL(file) {
+				var url = null;
+				file.files
+				if(window.createObjectURL != undefined) {
+					url = window.createObjectURL(file);
+				} else if(window.URL != undefined) {
+					url = window.URL.createObjectURL(file);
+				} else if(window.webkitURL != undefined) {
+					url = window.webkitURL.createObjectURL(file);
+				}
+				return url;
+
+			}
+
+			document.getElementById("Jbtn").onchange = function() {
+				var strArry = [];
+				for(var f = 0; f < this.files.length; f++) {
+					strArry.push(getObjectURL(this.files[f]));
+				};
+				console.log(strArry.length);
+				var imgHtml = "";
+				for(var i = 0; i < strArry.length; i++) {
+
+					imgHtml += "<img src='" + strArry[i] + "'/>";
+
+				}
+				$(".showImg").append(imgHtml);
+			}
+		</script>
+		<!--一次上传多张图片-->
+		<div class="ge_pic_icon_Infor">
+			<!-- <img src="images/moren.jpg"/>  -->
+		</div>
+		<div class="Infor_file">
+			<input type="file" name="uploadPicture" id="file" value="" title="上传照片" multiple="multiple" onchange="getPhoto(this)" />
+		</div>
+		<script>
+			var imgurl = "";
+
+			function getPhoto(node) {
+				var imgURL = "";
+				try {
+					var file = null;
+					if(node.files && node.files[0]) {
+						file = node.files[0];
+					} else if(node.files && node.files.item(0)) {
+						file = node.files.item(0);
+					}
+					//Firefox 因安全性问题已无法直接通过input[file].value 获取完整的文件路径  
+					try {
+						imgURL = file.getAsDataURL();
+					} catch(e) {
+						imgRUL = window.URL.createObjectURL(file);
+					}
+				} catch(e) {
+					if(node.files && node.files[0]) {
+						var reader = new FileReader();
+						reader.onload = function(e) {
+							imgURL = e.target.result;
+						};
+						reader.readAsDataURL(node.files[0]);
+					}
+				}
+				creatImg(imgRUL);
+				return imgURL;
+			}
+
+			function creatImg(imgRUL) {
+				var textHtml = "<img src='" + imgRUL + "'width='414px' height='600px'/>";
+				$(".ge_pic_icon_Infor").html(textHtml);
+			}
+		</script>
+		<ul>
+			<li class="active">
+				星期一
+				<i></i>
+			</li>
+			<li class="active">星期二<i></i></li>
+			<li>星期三<i></i></li>
+			<li>星期四</li>
+			<li>星期五</li>
+			<li>星期六</li>
+			<li>星期七</li>
+		</ul>
+		<!--获取鼠标的位置-->
+		<input type="text" placeholder="获取鼠标的当前位置" id="mouse-position" />
+		<script>
+			$(function() {
+				$('body').mousemove(function(e) {
+					e = e || window.event;
+					__xx = e.pageX || e.clientX + document.body.scroolLeft;
+					__yy = e.pageY || e.clientY + document.body.scrollTop;
+					console.log(__xx + "/-*/" + __yy);
+				});
+			});
+
+			function GetPostion(e) {
+				var x = getX(e);
+				var y = getY(e);
+			}
+
+			function getX(e) {
+				e = e || window.event;
+
+				return e.pageX || e.clientX + document.body.scroolLeft;
+			}
+
+			function getY(e) {
+				e = e || window.event;
+				return e.pageY || e.clientY + document.boyd.scrollTop;
+			}
+			GetPostion(event);
+		</script>
+		<!--鼠标点击输入框,隐藏层显示在输入框的下面-->
+		<script language="JavaScript">
+			function $(id) {
+				return(document.getElementById(id));
+			}
+
+			function show_div(evt) {
+				var od = $('div1');
+				var e = window.event || evt;
+				var o = e.srcElement || e.target;
+				console.log(od.style);
+				with(od.style) {
+					display = 'block';
+					console.log(typeof(o.offsetLeft));
+					left = o.offsetLeft + 'px';
+					top = o.offsetTop + o.offsetHeight + 1 + 'px';
+				}
+			}
+
+			function hide_div(evt) {
+				$('div1').style.display = 'none';
+			}
+
+			function control_bubble(oEvent) {
+				//取消冒泡 
+				oEvent = oEvent || window.event;
+				if(document.all) {
+					oEvent.cancelBubble = true;
+				} else {
+					oEvent.stopPropagation();
+				}
+			};
+
+			function fill_input(oEvent) {
+				$('text1').value = $('div1').innerHTML;
+				control_bubble(oEvent);
+			}
+
+			window.onload = function() {
+				$("text1").onfocus = show_div;
+
+				document.onclick = function() {
+					//隐藏层 
+					hide_div();
+				};
+
+				$("text1").onclick = control_bubble;
+				$("div1").onclick = fill_input;
+			}
+		</script>
+		<input type="text" id="text1" value="">
+		<br>
+		<div id="div1" align="center" style="background:#666;position:absolute;overflow:auto;display:none;padding:50px;">点击我</div>
+		<input type="button" value="点击" onClick="show()"/>
+<script>
+function show(){
+ alert("altKey："+window.event.altKey
+  +"\nshiftKey："+window.event.shiftKey
+  +"\nctrlKey："+window.event.ctrlKey
+ +"\nclientX："+window.event.clientX);
+}</script>
+
+	</body>
+
+</html>

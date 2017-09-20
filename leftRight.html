@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="utf-8">
+		<title>左右添加移除</title>
+		<style>
+			.main {
+				width: 100%;
+				margin: 0px;
+			}
+			
+			.main div {
+				display: inline-block;
+				float: left;
+				margin: 10px;
+			}
+			
+			.leftCon,
+			.rightCon {
+				border: 1px solid #b2b2b2;
+				width: 300px;
+			}
+			
+			table {
+				width: 100%;
+				text-align: center;
+			}
+			
+			table tr {
+				cursor: pointer;
+			}
+			
+			table tr td {
+				border-bottom: 1px solid #B2B2B2;
+			}
+			
+			table tr:first-child {
+				background: #f5f4f9;
+			}
+			
+			table tr:last-child td {
+				border: 0px;
+			}
+			
+			table tr:hover,
+			.active {
+				background: #f6f8fa;
+			}
+			
+			.centerCon button {
+				display: block;
+				width: 80px;
+				height: 20px;
+				margin: 10px;
+				cursor: pointer;
+			}
+			.rightCon span{
+				cursor: pointer;
+				width: auto;
+				height: 30px;
+			}
+		</style>
+	</head>
+
+	<body>
+		<div class="main">
+			<div class="leftCon">
+				<table>
+					<tr>
+						<th>课程名称</th>
+						<th>年级</th>
+						<th>科目</th>
+						<th>设置</th>
+					</tr>
+					<tr>
+						<td>英语口语初级</td>
+						<td>一年级</td>
+						<td>英语</td>
+						<td>x</td>
+					</tr>
+					<tr>
+						<td>英语口语初级</td>
+						<td>二年级</td>
+						<td>英语</td>
+						<td>x</td>
+					</tr>
+					<tr>
+						<td>英语口语初级</td>
+						<td>三年级</td>
+						<td>英语</td>
+						<td>x</td>
+					</tr>
+				</table>
+			</div>
+			<div class="centerCon">
+				<button type="button" class="leftAdd">右移》</button>
+				<button type="button" class="moveTr">移除</button>
+			</div>
+			<div class="rightCon">
+				<table>
+					<tr>
+						<th>课程名称</th>
+						<th>年级</th>
+						<th>科目</th>
+						<th>排序</th>
+					</tr>
+				</table>
+			</div>
+		</div>
+		<script src="js/jedate/jquery-1.7.2.js"></script>
+		<script>
+			$(function() {
+				$(".leftCon tr").click(function() {
+					$(this).toggleClass("active");
+				});
+				$(document).on("click",".rightCon tr",function(){
+					$(this).toggleClass("active");
+				});
+				//右边元素向上顺序改变
+				$(document).on("click",".rightCon tr td span:first-child",function(){
+					console.log($(this).text());
+					var $tr = $(this).parents("tr");
+					console.log($tr.index());
+					if($tr.index()!=-1 ){
+						if($tr.index() == 1){
+							alert("已经是第一个了！")
+						}else{
+							$tr.prev().before($tr);
+						}
+					}
+				});
+				//右边元素向下顺序改变
+				$(document).on("click",".rightCon tr td span:last-child",function(){
+					var $tr = $(this).parents("tr");
+					
+					var lastIndex = $(".rightCon tr:last-child").index();
+					if($tr.index()!=-1 ){
+						if($tr.index() == lastIndex){
+							alert("已经是最后一个了！")
+						}else{
+//							$tr.fadeOut().fadeIn();  淡入淡出
+							$tr.next().after($tr);
+						}
+					}
+				});
+				//向右添加元素，并删除左边相应元素
+				$(".leftAdd").click(function() {
+					var rightTr;
+					var list = $(".leftCon tr.active").length;
+					if(list <= 0) {
+						alert("请选择课程");
+					} else {
+						$(".leftCon tr.active").each(function(index, element) {
+							var tdList = $(element).find("td").length;
+							var f1 = $(element).find("td:first-child").text();
+							var f2 = $(element).find("td:nth-child(2)").text();
+							var f3 = $(element).find("td:nth-child(3)").text();
+							console.log(f1 + f2 + f3);
+							rightTr += "<tr>";
+							rightTr += "<td>" + f1 + "</td>";
+							rightTr += "<td>" + f2 + "</td>";
+							rightTr += "<td>" + f3 + "</td>";
+							rightTr += "<td><span class='moveUp'>向上</span><span class='moveDown'>向下</span></td>";
+							rightTr += "</tr>";
+						})
+					}
+					$(".rightCon table").append(rightTr);
+					$(".leftCon tr.active").remove();
+				});
+				//向左添加元素，并删除右边相应元素
+				$(".moveTr").click(function() {
+					var leftTr;
+					var list = $(".rightCon tr.active").length;
+					if(list <=0){
+						alert("请选择要删除的课程");
+					}else{
+						$(".rightCon tr.active").each(function(index, element) {
+							var tdList = $(element).find("td").length;
+							var f1 = $(element).find("td:first-child").text();
+							var f2 = $(element).find("td:nth-child(2)").text();
+							var f3 = $(element).find("td:nth-child(3)").text();
+							console.log(f1 + f2 + f3);
+							leftTr += "<tr>";
+							leftTr += "<td>" + f1 + "</td>";
+							leftTr += "<td>" + f2 + "</td>";
+							leftTr += "<td>" + f3 + "</td>";
+							leftTr += "<td></td>";
+							leftTr += "</tr>";
+						})
+					}
+					$(".leftCon table").append(leftTr);
+					$(".rightCon tr.active").remove();
+				});
+				
+			});
+		</script>
+	</body>
+
+</html>
